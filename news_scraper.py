@@ -1,4 +1,5 @@
-﻿import json
+﻿from datetime import datetime, timezone
+import json
 import requests
 from bs4 import BeautifulSoup
 
@@ -23,6 +24,7 @@ if response.status_code == 200:
             "title": title,
             "url": url,
             "pub_date": pub_date,
+            "scraped_date": str(datetime.now(timezone.utc)),
             "source": source
         }
         json_item_lists.append(item)
@@ -33,7 +35,9 @@ if response.status_code == 200:
         print(f"Source: {source}")
         print("*" * 40)
 
-    with open("test.json", "w", encoding="utf-8") as f:
+    date_time = datetime.now(timezone.utc).strftime("%d%m%Y_%H%M%S")
+    fname = f"scrape_{date_time}.json"
+    with open(fname, "w", encoding="utf-8") as f:
         json.dump(json_item_lists, f, ensure_ascii=False, indent=4)
 else:
     print("Server unreachable")
