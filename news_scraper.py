@@ -1,4 +1,5 @@
-﻿import requests
+﻿import json
+import requests
 from bs4 import BeautifulSoup
 
 response = requests.get("https://news.google.com/rss")
@@ -9,16 +10,30 @@ if response.status_code == 200:
 
     print(f"Found {len(news_list)} news\n")
 
-    for news in news_list:
-        title = news.find("title").text
-        link = news.find("link").text
-        pub_date = news.find("pubDate").text
+    json_item_lists = []
+
+    for index, news in enumerate(news_list):
+        title = news.find("title").text.strip()
+        url = news.find("link").text.strip()
+        pub_date = news.find("pubDate").text.strip()
         source = news.find("source").get("url")
 
+        item = {
+            "id": index + 1,
+            "title": title,
+            "url": url,
+            "pub_date": pub_date,
+            "source": source
+        }
+        json_item_lists.append(item)
+
         print(f"Title: {title}")
-        print(f"Link: {link}")
+        print(f"Link: {url}")
         print(f"Published on: {pub_date}")
         print(f"Source: {source}")
         print("*" * 40)
+
+    with open("test.json", "w", encoding="utf-8") as f:
+        json.dump(json_item_lists, f, ensure_ascii=False, indent=4)
 else:
     print("Server unreachable")
