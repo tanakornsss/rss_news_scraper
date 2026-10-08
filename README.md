@@ -1,0 +1,17 @@
+﻿# Basic New Scraper
+
+---
+## Simplified Process
+```
+fetch -> parse -> normalize -> deduplicate -> database
+```
+
+## File Structure
+```
+collector/
+├── main.py
+├── sources.py
+├── database.py
+├── parser.py
+└── config.py
+```
