@@ -1,10 +1,15 @@
 ﻿from bs4 import BeautifulSoup
 
+from collector.database import Database
+
+
 def parse(response: str):
     soup = BeautifulSoup(response, 'lxml-xml')
     news_list = soup.find_all("item")
 
     print(f"Found {len(news_list)} news\n")
+
+    db = Database("test.db")
 
     for index, news in enumerate(news_list):
         title = news.find("title").text.strip()
