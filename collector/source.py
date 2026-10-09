@@ -3,11 +3,13 @@ from collector.parser import parse
 
 def find_from_keyword(keyword: str):
     url = "https://news.google.com/rss"
+
+    # Extra parameters
     query_params = {
         "q": keyword,
-        "hl": "en-US",
-        "gl": "US",
-        "ceid": "US:en"
+        "hl": "en-US",   # language
+        "gl": "US",      # location
+        "ceid": "US:en"  # country edition ID
     }
 
     print("Please wait...")
