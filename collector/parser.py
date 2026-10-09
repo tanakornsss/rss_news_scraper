@@ -1,6 +1,4 @@
-﻿from datetime import datetime, timezone
-
-from bs4 import BeautifulSoup
+﻿from bs4 import BeautifulSoup
 
 def parse(response: str):
     soup = BeautifulSoup(response, 'lxml-xml')
