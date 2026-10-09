@@ -43,6 +43,7 @@ def parse(response: str) -> int:
         }
         db_list.append(item)
 
+    # Returns news that was written
     inserted = db.write_to_db(db_list)
 
     print(f"Parsed: {len(db_list)}")

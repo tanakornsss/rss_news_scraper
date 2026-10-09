@@ -3,6 +3,7 @@ from contextlib import closing
 
 class Database:
 
+    # Database init code, will only create tables if one does not exist
     def __init__(self, db_name: str):
         self.db_name = db_name
         self._create_tables()
@@ -29,6 +30,7 @@ class Database:
                 )
 
     def write_to_db(self, news: list[dict]) -> int:
+        # Will return 0 news if data sent was not type of news
         if not news:
             return 0
 
