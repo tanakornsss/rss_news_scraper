@@ -1,5 +1,5 @@
 import requests
-from bs4 import BeautifulSoup
+from collector.parser import parse
 
 def find_from_keyword(keyword: str):
     url = "https://news.google.com/rss"
@@ -14,9 +14,6 @@ def find_from_keyword(keyword: str):
     response = requests.get(url, params=query_params)
 
     if response.status_code == 200:
-        soup = BeautifulSoup(response.text, 'lxml-xml')
-        news_list = soup.find_all("item")
-
-        print(news_list)
+        parse(response.text)
     else:
         print("Failed to connect")
