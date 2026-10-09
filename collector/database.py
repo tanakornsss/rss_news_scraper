@@ -5,14 +5,14 @@ class Database:
 
     def __init__(self, db_name: str):
         self.db_name = db_name
-        self.create_tables()
+        self._create_tables()
 
     def _get_connection(self) -> sqlite3.Connection:
         connection = sqlite3.connect(self.db_name)
         connection.row_factory = sqlite3.Row
         return connection
 
-    def create_tables(self) -> None:
+    def _create_tables(self) -> None:
         with closing(self._get_connection()) as connection:
             with connection:
                 connection.execute(
@@ -27,4 +27,33 @@ class Database:
                     )
                     """
                 )
+
+    def write_to_db(self, news: list[dict]) -> int:
+        if not news:
+            return 0
+
+        rows = [
+            (
+                item["title"],
+                item["url"],
+                item.get("pub_date"),
+                item["scraped_date"],
+                item["source"]
+            )
+            for item in news
+        ]
+
+        with closing(self._get_connection()) as connection:
+            with connection:
+                cursor = connection.executemany(
+                    """
+                    INSERT INTO articles
+                        (title, url, pub_date, scraped_date, source)
+                    VALUES (?, ?, ?, ?, ?)
+                    ON CONFLICT(url) DO NOTHING
+                    """,
+                    rows
+                )
+
+                return cursor.rowcount
 
