@@ -36,7 +36,7 @@ class Database:
             (
                 item["title"],
                 item["url"],
-                item.get("pub_date"),
+                item.get("pub_date"), # Null handling
                 item["scraped_date"],
                 item["source"]
             )
