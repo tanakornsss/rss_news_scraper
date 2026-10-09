@@ -54,6 +54,4 @@ class Database:
                     """,
                     rows
                 )
-
-                return cursor.rowcount
-
+            return cursor.rowcount
