@@ -9,7 +9,7 @@ def parse(response: str) -> int:
 
     print(f"Found {len(news_list)} news\n")
 
-    db = Database("test.db")
+    db = Database()
     db_list = []
 
     for news in news_list:

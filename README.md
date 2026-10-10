@@ -10,7 +10,7 @@ fetch -> parse -> normalize -> deduplicate -> database
 ```
 collector/
 ├── main.py
-├── sources.py
+├── source.py
 ├── database.py
 ├── parser.py
 └── config.py

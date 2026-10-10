@@ -1,11 +1,12 @@
 ﻿import sqlite3
 from contextlib import closing
+from config import DB_PATH
 
 class Database:
 
     # Database init code, will only create tables if one does not exist
-    def __init__(self, db_name: str):
-        self.db_name = db_name
+    def __init__(self):
+        self.db_name = str(DB_PATH)
         self._create_tables()
 
     def _get_connection(self) -> sqlite3.Connection:
@@ -57,3 +58,36 @@ class Database:
                     rows
                 )
             return cursor.rowcount
+
+    def get_articles(self, limit: int = 20) -> list[dict]:
+        with closing(self._get_connection()) as connection:
+            rows = connection.execute(
+                """
+                SELECT id, title, url, pub_date, scraped_date, source
+                FROM articles
+                ORDER BY scraped_date DESC
+                LIMIT ?
+                """,
+                (limit,)
+            ).fetchall()
+
+            return [dict(row) for row in rows]
+
+    def search_articles(self, keyword: str) -> list[dict]:
+        keyword = keyword.strip()
+
+        if not keyword:
+            return []
+
+        with closing(self._get_connection()) as connection:
+            rows = connection.execute(
+                """
+                SELECT id, title, url, pub_date, scraped_date, source    
+                FROM articles
+                WHERE title LIKE ?
+                ORDER BY scraped_date DESC
+                """,
+                (f"%{keyword}%",)
+            ).fetchall()
+
+            return [dict(row) for row in rows]
