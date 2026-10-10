@@ -1,6 +1,7 @@
 ﻿import sqlite3
+from config import DB_PATH
 
-with sqlite3.connect("../test.db") as conn:
+with sqlite3.connect(DB_PATH) as conn:
     count = conn.execute(
         "SELECT COUNT(*) FROM articles"
     ).fetchone()[0]
