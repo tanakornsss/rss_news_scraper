@@ -57,3 +57,17 @@ class Database:
                     rows
                 )
             return cursor.rowcount
+
+    def get_articles(self, limit: int = 20) -> list[dict]:
+        with closing(self._get_connection()) as connection:
+            rows = connection.execute(
+                """
+                SELECT id, title, url, pub_date, scraped_date, source
+                FROM articles
+                ORDER BY scraped_date DESC
+                LIMIT ?
+                """,
+                (limit,)
+            ).fetchall()
+
+            return [dict(row) for row in rows]
