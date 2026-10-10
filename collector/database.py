@@ -72,3 +72,22 @@ class Database:
             ).fetchall()
 
             return [dict(row) for row in rows]
+
+    def search_articles(self, keyword: str) -> list[dict]:
+        keyword = keyword.strip()
+
+        if not keyword:
+            return []
+
+        with closing(self._get_connection()) as connection:
+            rows = connection.execute(
+                """
+                SELECT id, title, url, pub_date, scraped_date, source    
+                FROM articles
+                WHERE title LIKE ?
+                ORDER BY scraped_date DESC
+                """,
+                (f"%{keyword}%",)
+            ).fetchall()
+
+            return [dict(row) for row in rows]
