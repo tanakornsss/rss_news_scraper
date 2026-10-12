@@ -14,8 +14,10 @@ fetch -> parse -> normalize -> deduplicate -> database
 ├── news_scraper.py
 ├── analysis
 │   ├── text_cleaning.py
+│   ├── tfidf.py
 │   └── test
-│       └── test_text_sanitize.py
+│       ├── test_text_sanitize.py
+│       └── test_tfidf.py
 └── collector
     ├── source.py
     ├── database.py
@@ -23,6 +25,7 @@ fetch -> parse -> normalize -> deduplicate -> database
     └── test
         ├── check_db.py
         ├── test_db_null_read.py
+        ├── test_dedup.py
         ├── test_get_articles.py
         └── test_search_articles.py
         
@@ -33,5 +36,7 @@ fetch -> parse -> normalize -> deduplicate -> database
 - [x] Add SQLite
 - [x] Write data to SQLite
 - [x] Sanitize input data
-- [ ] Implement TF-IDF
-- [ ] Implement cosine similarity
+- [x] Implement text similarity detection
+- [ ] Implement embeddings
+- [ ] Add basic config file
+- [ ] Add Thai language support
