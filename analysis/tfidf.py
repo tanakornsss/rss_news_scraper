@@ -9,11 +9,13 @@ def find_similar_articles(
     threshold: float = 0.5
 ) -> list[dict]:
 
+    # Collect articles which has title in it
     articles = [
         article for article in articles
         if article.get("title", "").strip()
     ]
 
+    # Sanitize text
     titles = [sanitize_text(article["title"]) for article in articles]
 
     vectorizer = TfidfVectorizer()
@@ -23,6 +25,7 @@ def find_similar_articles(
 
     pairs = []
 
+    # Pick a combination of news titles and access the score vector in similarity matrix
     for i, j in combinations(range(len(articles)), 2):
         score = similarity_matrix[i, j]
 
@@ -35,4 +38,5 @@ def find_similar_articles(
 
     pairs.sort(key=lambda item: item[0], reverse=True)
 
+    # Tail splice
     return pairs[:top_k]
