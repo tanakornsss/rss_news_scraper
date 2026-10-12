@@ -2,20 +2,17 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from analysis.text_cleaning import sanitize_text
-from collector.database import Database
 
-def find_similar_articles(limit: int = 100):
-    db = Database()
-    articles = db.get_articles(limit=limit)
+def find_similar_articles(
+    articles: list[dict],
+    top_k: int = 20,
+    threshold: float = 0.5
+) -> list[dict]:
 
     articles = [
         article for article in articles
         if article.get("title", "").strip()
     ]
-
-    if len(articles) < 2:
-        print("Need at least 2 articles")
-        return
 
     titles = [sanitize_text(article["title"]) for article in articles]
 
@@ -29,19 +26,13 @@ def find_similar_articles(limit: int = 100):
     for i, j in combinations(range(len(articles)), 2):
         score = similarity_matrix[i, j]
 
-        pairs.append((
-            score,
-            articles[i],
-            articles[j]
-        ))
+        if score > threshold:
+            pairs.append((
+                score,
+                articles[i],
+                articles[j]
+            ))
 
     pairs.sort(key=lambda item: item[0], reverse=True)
 
-    for score, article_a, article_b in pairs[:10]:
-        print(f"Similarity: {score:.3f}")
-        print(f"A: {article_a['title']}")
-        print(f"B: {article_b['title']}")
-        print("-" * 60)
-
-if __name__ == "__main__":
-    find_similar_articles()
+    return pairs[:top_k]
