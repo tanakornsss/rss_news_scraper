@@ -6,6 +6,12 @@
 fetch -> parse -> normalize -> deduplicate -> database
 ```
 
+## App Options
+
+1. Fetch data from internet
+2. Analyze saved data
+3. (WIP)
+
 ## File Structure
 ```
 
