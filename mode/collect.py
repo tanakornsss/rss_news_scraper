@@ -1,0 +1,15 @@
+﻿from collector.source import find_from_keyword
+
+def collect():
+
+    while True:
+        # Ask for user keyword, then search it up
+        keyword = str(input("Enter your search keyword: ")).strip()
+
+        if keyword:
+            # This function returns number of news that was inserted into the db
+            inserted = find_from_keyword(keyword)
+            print(f"Successfully inserted {inserted} new articles.")
+            break
+        else:
+            print("Please enter keyword")

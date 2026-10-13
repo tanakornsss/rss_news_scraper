@@ -1,5 +1,5 @@
-﻿from screen.analyze import analyze
-from screen.collect import collect
+﻿from mode.analyze import analyze
+from mode.collect import collect
 
 print("RSS News Scraper\n")
 
