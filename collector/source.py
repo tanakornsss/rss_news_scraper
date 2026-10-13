@@ -19,7 +19,7 @@ def find_from_keyword(keyword: str) -> int:
         response = requests.get(
             url,
             params=query_params,
-            timeout=15
+            timeout=CONFIG.getint("COLLECTOR", "timeout")
         )
         response.raise_for_status()
     except requests.RequestException as error:
