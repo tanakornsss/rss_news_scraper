@@ -1,5 +1,5 @@
 ﻿import sqlite3
-from path import DB_PATH
+from root_dir import DB_PATH
 
 with sqlite3.connect(DB_PATH) as conn:
     count = conn.execute(

@@ -1,12 +1,15 @@
 ﻿import sqlite3
 from contextlib import closing
-from path import DB_PATH
+from config.setting import CONFIG
+from root_dir import BASE_DIR
 
 class Database:
 
     # Database init code, will only create tables if one does not exist
     def __init__(self):
-        self.db_name = str(DB_PATH)
+        name = CONFIG["DATABASE"]["name"]
+
+        self.db_name = str(BASE_DIR/name)
         self._create_tables()
 
     def _get_connection(self) -> sqlite3.Connection:

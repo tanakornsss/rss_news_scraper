@@ -1,6 +1,6 @@
 ﻿import configparser
 
-from path import BASE_DIR
+from root_dir import BASE_DIR
 
 
 def load_config():
