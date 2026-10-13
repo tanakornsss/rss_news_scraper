@@ -5,6 +5,11 @@ def analyze():
     db = Database()
 
     articles = db.get_articles()
+
+    if len(articles) < 1:
+        print("No data found")
+        return
+
     pairs = find_similar_articles(
         articles=articles,
         threshold=0.2,
