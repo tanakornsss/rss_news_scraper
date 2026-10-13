@@ -1,6 +1,6 @@
 ﻿import sqlite3
 from contextlib import closing
-from config import DB_PATH
+from path import DB_PATH
 
 class Database:
 

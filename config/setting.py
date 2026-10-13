@@ -1,5 +1,7 @@
 ﻿import configparser
-from config import BASE_DIR
+
+from path import BASE_DIR
+
 
 def load_config():
     config = configparser.ConfigParser()
@@ -24,5 +26,6 @@ def load_config():
             )
 
     return config
+
 
 CONFIG = load_config()
