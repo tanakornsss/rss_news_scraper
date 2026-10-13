@@ -1,5 +1,7 @@
 ﻿from analysis.tfidf import find_similar_articles
 from collector.database import Database
+from config.setting import CONFIG
+
 
 def analyze():
     db = Database()
@@ -12,8 +14,8 @@ def analyze():
 
     pairs = find_similar_articles(
         articles=articles,
-        threshold=0.2,
-        top_k=100
+        threshold=CONFIG.getfloat("SIMILARITY", "threshold"),
+        top_k=CONFIG.getint("SIMILARITY", "top_k")
     )
 
     for score, article_a, article_b in pairs[:10]:
