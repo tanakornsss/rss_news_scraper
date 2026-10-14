@@ -1,4 +1,6 @@
-﻿from sklearn.cluster import KMeans
+﻿from collections import defaultdict
+
+from sklearn.cluster import KMeans
 from analysis import tfidf
 from analysis.text_cleaning import sanitize_text
 from collector.database import Database
@@ -19,5 +21,13 @@ model = KMeans(
 
 labels = model.fit_predict(tfidf_matrix)
 
+clusters = defaultdict(list)
+
 for title, label in zip(titles, labels):
-    print(f"Cluster {label}: {title}")
+    clusters[label].append(title)
+
+for cluster_id, cluster_titles in sorted(clusters.items()):
+    print(f"\n=== Cluster {cluster_id} ===")
+
+    for title in cluster_titles:
+        print(f"- {title}")
