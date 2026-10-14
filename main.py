@@ -1,11 +1,27 @@
-﻿from collector.source import find_from_keyword
+﻿from mode.analyze import analyze
+from mode.collect import collect
 
-# Ask for user keyword, then search it up
-keyword = str(input("Enter your search keyword: ")).strip()
+print("RSS News Scraper\n")
 
-if keyword:
-    # This function returns number of news that was inserted into the db
-    inserted = find_from_keyword(keyword)
-    print(f"Successfully inserted {inserted} new articles.")
-else:
-    print("Please enter keyword")
+while True:
+    print("=" * 40)
+    print("Mode Selection")
+    print("[1]: Collect news from RSS")
+    print("[2]: Analyze existing news")
+    print("[0]: Exit")
+    print("=" * 40)
+
+    while True:
+        mode = int(input("Enter your mode: "))
+
+        match mode:
+            case 1:
+                collect()
+                break
+            case 2:
+                analyze()
+                break
+            case 0:
+                exit()
+            case _:
+                print("Invalid command. Try again.")

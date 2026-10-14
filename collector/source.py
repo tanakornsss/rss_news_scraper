@@ -1,5 +1,6 @@
 import requests
 from collector.parser import parse
+from config.setting import CONFIG
 
 def find_from_keyword(keyword: str) -> int:
     url = "https://news.google.com/rss"
@@ -7,9 +8,9 @@ def find_from_keyword(keyword: str) -> int:
     # Extra parameters
     query_params = {
         "q": keyword,
-        "hl": "en-US",   # language
-        "gl": "US",      # location
-        "ceid": "US:en"  # country edition ID
+        "hl": CONFIG["REGION"]["hl"],     # language
+        "gl": CONFIG["REGION"]["gl"],     # location
+        "ceid": CONFIG["REGION"]["ceid"]  # country edition ID
     }
 
     print("Please wait...")
@@ -18,7 +19,7 @@ def find_from_keyword(keyword: str) -> int:
         response = requests.get(
             url,
             params=query_params,
-            timeout=15
+            timeout=CONFIG.getint("COLLECTOR", "timeout")
         )
         response.raise_for_status()
     except requests.RequestException as error:
