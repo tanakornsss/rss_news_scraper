@@ -1,33 +1,36 @@
 ﻿from collections import defaultdict
-
 from sklearn.cluster import KMeans
 from analysis import tfidf
 from analysis.text_cleaning import sanitize_text
-from collector.database import Database
 
-db = Database()
-articles = db.get_articles(limit=100)
+def clustering(
+    articles: list[dict],
+    n_clusters: int = 2,
+    random_state: int = 42,
+    n_init: int = 10
+) -> list[dict]:
 
-titles = [sanitize_text(article["title"]) for article in articles]
+    articles = [
+        article for article in articles
+        if article.get("title").strip()
+    ]
 
-vectorizer = tfidf.TfidfVectorizer()
-tfidf_matrix = vectorizer.fit_transform(titles)
+    titles = [sanitize_text(article["title"]) for article in articles]
 
-model = KMeans(
-    n_clusters=2,
-    random_state=42,
-    n_init=10
-)
+    vectorizer = tfidf.TfidfVectorizer()
+    tfidf_matrix = vectorizer.fit_transform(titles)
 
-labels = model.fit_predict(tfidf_matrix)
+    model = KMeans(
+        n_clusters=n_clusters,
+        random_state=random_state,
+        n_init=n_init
+    )
 
-clusters = defaultdict(list)
+    labels = model.fit_predict(tfidf_matrix)
 
-for title, label in zip(titles, labels):
-    clusters[label].append(title)
+    clusters = defaultdict(list)
 
-for cluster_id, cluster_titles in sorted(clusters.items()):
-    print(f"\n=== Cluster {cluster_id} ===")
+    for title, label in zip(titles, labels):
+        clusters[label].append(title)
 
-    for title in cluster_titles:
-        print(f"- {title}")
+    return [dict(clusters)]
