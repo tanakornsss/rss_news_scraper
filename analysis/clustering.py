@@ -8,7 +8,7 @@ def clustering(
     n_clusters: int = 2,
     random_state: int = 42,
     n_init: int = 10
-) -> list[dict]:
+) -> list[tuple]:
 
     articles = [
         article for article in articles
@@ -33,4 +33,4 @@ def clustering(
     for title, label in zip(titles, labels):
         clusters[label].append(title)
 
-    return [dict(clusters)]
+    return sorted(clusters.items())

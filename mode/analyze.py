@@ -1,4 +1,5 @@
-﻿from analysis.tfidf import find_similar_articles
+﻿from analysis.clustering import clustering
+from analysis.tfidf import find_similar_articles
 from collector.database import Database
 from config.setting import CONFIG
 
@@ -18,8 +19,16 @@ def analyze():
         top_k=CONFIG.getint("SIMILARITY", "top_k")
     )
 
+    clusterings = clustering(articles)
+
     for score, article_a, article_b in pairs[:10]:
         print(f"Article A: {article_a["title"]}")
         print(f"Article B: {article_b["title"]}")
         print(f"Similarity: {score: .3f}")
         print("-" * 40)
+
+    for label, titles in clusterings:
+        print(f"Cluster {label}")
+
+        for title in titles:
+            print(f"Title: {title}")
