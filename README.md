@@ -20,6 +20,7 @@ fetch -> parse -> normalize -> deduplicate -> database
 ├── news_scraper.py
 ├── config.ini
 ├── analysis
+│   ├── clustering.py
 │   ├── text_cleaning.py
 │   ├── tfidf.py
 │   └── test
@@ -50,5 +51,5 @@ fetch -> parse -> normalize -> deduplicate -> database
 - [x] Implement text similarity detection
 - [x] Add basic config file
 - [x] Add basic landing ui
-- [ ] Implement clustering
+- [x] Implement clustering
 - [ ] Add Thai language support
