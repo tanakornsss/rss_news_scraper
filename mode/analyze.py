@@ -19,7 +19,12 @@ def analyze():
         top_k=CONFIG.getint("SIMILARITY", "top_k")
     )
 
-    clusterings = clustering(articles)
+    clusterings = clustering(
+        articles=articles,
+        n_clusters=CONFIG.getint("CLUSTERINGS", "n_clusters"),
+        random_state=CONFIG.getint("CLUSTERINGS", "random_state"),
+        n_init=CONFIG.getint("CLUSTERINGS", "n_init")
+    )
 
     print(("=" * 40) + " SIMILARITY " + ("=" * 40))
     for score, article_a, article_b in pairs[:10]:
