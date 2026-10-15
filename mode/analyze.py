@@ -21,12 +21,14 @@ def analyze():
 
     clusterings = clustering(articles)
 
+    print(("=" * 40) + " SIMILARITY " + ("=" * 40))
     for score, article_a, article_b in pairs[:10]:
         print(f"Article A: {article_a["title"]}")
         print(f"Article B: {article_b["title"]}")
         print(f"Similarity: {score: .3f}")
         print("-" * 40)
 
+    print(("=" * 40) + " CLUSTERING " + ("=" * 40))
     for label, titles in clusterings:
         print(f"Cluster {label}")
 
