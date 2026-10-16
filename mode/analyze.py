@@ -30,13 +30,27 @@ def analyze():
 
         print_summary(pairs, clusterings)
     elif lang == "th-TH":
-        print("Thai")
+        pairs = find_similar_articles(
+            articles=articles,
+            is_thai=True,
+            threshold=CONFIG.getfloat("SIMILARITY", "threshold"),
+            top_k=CONFIG.getint("SIMILARITY", "top_k")
+        )
+
+        clusterings = clustering(
+            articles=articles,
+            n_clusters=CONFIG.getint("CLUSTERINGS", "n_clusters"),
+            random_state=CONFIG.getint("CLUSTERINGS", "random_state"),
+            n_init=CONFIG.getint("CLUSTERINGS", "n_init")
+        )
+
+        print_summary(pairs, clusterings)
     else:
         print("Unsupported language")
 
 def print_summary(pairs: list[dict], clusterings: list[tuple]):
     print(("=" * 40) + " SIMILARITY " + ("=" * 40))
-    for score, article_a, article_b in pairs[:10]:
+    for score, article_a, article_b in pairs:
         print(f"Article A: {article_a["title"]}")
         print(f"Article B: {article_b["title"]}")
         print(f"Similarity: {score: .3f}")

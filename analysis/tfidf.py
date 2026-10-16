@@ -1,10 +1,12 @@
 ﻿from itertools import combinations
+from pythainlp import word_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from analysis.text_cleaning import sanitize_text
 
 def find_similar_articles(
     articles: list[dict],
+    is_thai: bool = False,
     top_k: int = 20,
     threshold: float = 0.5
 ) -> list[dict]:
@@ -19,7 +21,16 @@ def find_similar_articles(
     titles = [sanitize_text(article["title"]) for article in articles]
 
     vectorizer = TfidfVectorizer()
-    tfidf_matrix = vectorizer.fit_transform(titles)
+    vectorizer_th = TfidfVectorizer(
+        tokenizer=thai_tokenizer,
+        token_pattern=None,
+        lowercase=False
+    )
+
+    if is_thai:
+        tfidf_matrix = vectorizer_th.fit_transform(titles)
+    else:
+        tfidf_matrix = vectorizer.fit_transform(titles)
 
     similarity_matrix = cosine_similarity(tfidf_matrix)
 
@@ -40,3 +51,6 @@ def find_similar_articles(
 
     # Tail splice
     return pairs[:top_k]
+
+def thai_tokenizer(text: str):
+    return word_tokenize(text, engine="newmm")
