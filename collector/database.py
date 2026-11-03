@@ -10,22 +10,26 @@ class Database:
         name = CONFIG["DATABASE"]["name"]
 
         self.db_name = str(BASE_DIR/name)
-        self._create_tables()
+        self._create_article_table()
 
     def _get_connection(self) -> sqlite3.Connection:
         connection = sqlite3.connect(self.db_name)
         connection.row_factory = sqlite3.Row
         return connection
 
-    def _create_tables(self) -> None:
+    def _create_article_table(self) -> None:
         with closing(self._get_connection()) as connection:
             with connection:
                 connection.execute(
                     """
                     CREATE TABLE IF NOT EXISTS articles (
                         id INTEGER PRIMARY KEY,
+                        
                         title TEXT NOT NULL,
                         url TEXT NOT NULL UNIQUE,
+                        
+                        content_hash TEXT,
+                        
                         pub_date TEXT,
                         scraped_date TEXT NOT NULL,
                         source TEXT NOT NULL
