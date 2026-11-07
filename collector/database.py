@@ -46,6 +46,7 @@ class Database:
             (
                 item["title"],
                 item["url"],
+                item["content_hash"],
                 item.get("pub_date"), # Null handling
                 item["scraped_date"],
                 item["source"]
@@ -58,8 +59,8 @@ class Database:
                 cursor = connection.executemany(
                     """
                     INSERT INTO articles
-                        (title, url, pub_date, scraped_date, source)
-                    VALUES (?, ?, ?, ?, ?)
+                        (title, url, content_hash, pub_date, scraped_date, source)
+                    VALUES (?, ?, ?, ?, ?, ?)
                     ON CONFLICT(url) DO NOTHING
                     """,
                     rows
@@ -70,7 +71,7 @@ class Database:
         with closing(self._get_connection()) as connection:
             rows = connection.execute(
                 """
-                SELECT id, title, url, pub_date, scraped_date, source
+                SELECT title, url, content_hash, pub_date, scraped_date, source
                 FROM articles
                 ORDER BY scraped_date DESC
                 LIMIT ?
@@ -89,7 +90,7 @@ class Database:
         with closing(self._get_connection()) as connection:
             rows = connection.execute(
                 """
-                SELECT id, title, url, pub_date, scraped_date, source    
+                SELECT title, url, content_hash, pub_date, scraped_date, source 
                 FROM articles
                 WHERE title LIKE ?
                 ORDER BY scraped_date DESC

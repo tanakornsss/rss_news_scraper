@@ -1,6 +1,7 @@
 ﻿from datetime import datetime, timezone
 from bs4 import BeautifulSoup
 from collector.database import Database
+from collector.hash import generate_hash
 
 
 def parse(response: str) -> int:
@@ -37,6 +38,7 @@ def parse(response: str) -> int:
         item = {
             "title": title,
             "url": url,
+            "content_hash": generate_hash(title),
             "pub_date": pub_date,
             "scraped_date": datetime.now(timezone.utc).isoformat(),
             "source": source
