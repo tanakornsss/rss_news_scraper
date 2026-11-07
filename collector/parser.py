@@ -2,6 +2,7 @@
 from bs4 import BeautifulSoup
 from collector.database import Database
 from collector.hash import generate_hash
+from analysis.text_cleaning import sanitize_text
 
 
 def parse(response: str) -> int:
@@ -38,7 +39,7 @@ def parse(response: str) -> int:
         item = {
             "title": title,
             "url": url,
-            "content_hash": generate_hash(title),
+            "content_hash": generate_hash(sanitize_text(title)),
             "pub_date": pub_date,
             "scraped_date": datetime.now(timezone.utc).isoformat(),
             "source": source
