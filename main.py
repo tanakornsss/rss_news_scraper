@@ -1,9 +1,11 @@
 ﻿import textwrap
+import questionary
+
 from mode.analyze import analyze
 from mode.collect import collect
 from typer import Typer
 from rich.console import Console
-from rich.panel import Panel
+from questionary import Choice
 
 logo = """[bold red]
         88""Yb .dP"Y8 .dP"Y8     88b 88 888888 Yb        dP .dP"Y8     .dP"Y8  dP""b8 88""Yb    db    88""Yb 888888 88""Yb 
@@ -21,36 +23,22 @@ def main():
     logo_txt = textwrap.dedent(logo).strip()
     console.print(logo_txt)
 
-    choices = """
-                [1]: Collect news from RSS
-                [2]: Analyze existing news
-                [0]: Exit
-                """
+    mode = questionary.select(
+        "Select your mode",
+        choices=[
+            Choice("[1]: Collect news from RSS", value=1),
+            Choice("[2]: Analyze existing news", value=2),
+            Choice("[0]: Exit", value=0),
+        ]
+    ).ask()
 
-    while True:
-        console.print(
-            Panel(
-                textwrap.dedent(choices).strip(),
-                title="Mode Select",
-                expand=False
-            )
-        )
-
-        while True:
-            mode = int(input("Enter your mode: "))
-
-            match mode:
-                case 1:
-                    collect()
-                    break
-                case 2:
-                    analyze()
-                    break
-                case 0:
-                    exit()
-                case _:
-                    print("Invalid command. Try again.")
-
+    match mode:
+        case 1:
+            collect()
+        case 2:
+            analyze()
+        case 0:
+            exit()
 
 if __name__ == "__main__":
     app()
