@@ -23,22 +23,23 @@ def main():
     logo_txt = textwrap.dedent(logo).strip()
     console.print(logo_txt)
 
-    mode = questionary.select(
-        "Select your mode",
-        choices=[
-            Choice("[1]: Collect news from RSS", value=1),
-            Choice("[2]: Analyze existing news", value=2),
-            Choice("[0]: Exit", value=0),
-        ]
-    ).ask()
+    while True:
+        mode = questionary.select(
+            "Select your mode",
+            choices=[
+                Choice("[1]: Collect news from RSS", value=1),
+                Choice("[2]: Analyze existing news", value=2),
+                Choice("[0]: Exit", value=0),
+            ]
+        ).ask()
 
-    match mode:
-        case 1:
-            collect()
-        case 2:
-            analyze()
-        case 0:
-            exit()
+        match mode:
+            case 1:
+                collect()
+            case 2:
+                analyze()
+            case 0:
+                exit()
 
 if __name__ == "__main__":
     app()
