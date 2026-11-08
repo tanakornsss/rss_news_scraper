@@ -1,10 +1,12 @@
-﻿from collector.source import find_from_keyword
+﻿import questionary
+
+from collector.source import find_from_keyword
 
 def collect():
 
     while True:
         # Ask for user keyword, then search it up
-        keyword = str(input("Enter your search keyword: ")).strip()
+        keyword = questionary.text("What would you like to search?").ask()
 
         if keyword:
             # This function returns number of news that was inserted into the db
