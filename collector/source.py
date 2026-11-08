@@ -2,7 +2,7 @@ import requests
 from collector.parser import parse
 from config.setting import CONFIG
 
-def find_from_keyword(keyword: str) -> int:
+def find_from_keyword(keyword: str):
     url = "https://news.google.com/rss"
 
     # Extra parameters
@@ -12,8 +12,6 @@ def find_from_keyword(keyword: str) -> int:
         "gl": CONFIG["REGION"]["gl"],     # location
         "ceid": CONFIG["REGION"]["ceid"]  # country edition ID
     }
-
-    print("Please wait...")
 
     try:
         response = requests.get(
@@ -26,5 +24,4 @@ def find_from_keyword(keyword: str) -> int:
         print(f"Failed to fetch RSS: {error}")
         return 0
 
-    inserted = parse(response.text)
-    return inserted
+    return parse(response.text)

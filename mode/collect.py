@@ -1,6 +1,7 @@
 ﻿import questionary
 
 from collector.source import find_from_keyword
+from rich import print
 
 def collect():
 
@@ -13,8 +14,16 @@ def collect():
 
         if keyword:
             # This function returns number of news that was inserted into the db
-            inserted = find_from_keyword(keyword)
-            print(f"Successfully inserted {inserted} new articles.")
+
+            print("Please wait...")
+
+            parsed = find_from_keyword(keyword)
+
+            print(f"Found: {parsed[0]}")
+            print(f"Parsed: {parsed[1]}")
+            print(f"Inserted: {parsed[2]}")
+            print(f"Skipped or already stored: {parsed[1] - parsed[2]}")
+
             break
         else:
             print("Please enter keyword")

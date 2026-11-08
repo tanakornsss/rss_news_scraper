@@ -3,8 +3,8 @@ import questionary
 
 from mode.analyze import analyze
 from mode.collect import collect
+from rich import print
 from typer import Typer
-from rich.console import Console
 from questionary import Choice
 
 logo = """[purple]
@@ -16,12 +16,11 @@ logo = """[purple]
         """
 
 app = Typer(rich_markup_mode="rich")
-console = Console()
 
 @app.command()
 def main():
     logo_txt = textwrap.dedent(logo).strip()
-    console.print(logo_txt)
+    print(logo_txt)
 
     while True:
         mode = questionary.select(

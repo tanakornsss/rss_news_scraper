@@ -5,11 +5,9 @@ from collector.hash import generate_hash
 from analysis.text_cleaning import sanitize_text
 
 
-def parse(response: str) -> int:
+def parse(response: str):
     soup = BeautifulSoup(response, 'lxml-xml')
     news_list = soup.find_all("item")
-
-    print(f"Found {len(news_list)} news\n")
 
     db = Database()
     db_list = []
@@ -49,8 +47,4 @@ def parse(response: str) -> int:
     # Returns news that was written
     inserted = db.write_to_db(db_list)
 
-    print(f"Parsed: {len(db_list)}")
-    print(f"Inserted: {inserted}")
-    print(f"Skipped or already stored: {len(db_list) - inserted}")
-
-    return inserted
+    return len(news_list), len(db_list), inserted
