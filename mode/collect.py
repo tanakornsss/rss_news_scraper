@@ -1,9 +1,16 @@
-﻿import questionary
+﻿import textwrap
+
+import questionary
 
 from collector.source import find_from_keyword
 from rich import print
+from rich.console import Console
+from rich.panel import Panel
+
 
 def collect():
+
+    console = Console()
 
     while True:
         # Ask for user keyword, then search it up
@@ -15,14 +22,29 @@ def collect():
         if keyword:
             # This function returns number of news that was inserted into the db
 
-            print("Please wait...")
+            print("\nPlease wait...\n")
 
-            parsed = find_from_keyword(keyword)
+            result = find_from_keyword(keyword)
 
-            print(f"Found: {parsed[0]}")
-            print(f"Parsed: {parsed[1]}")
-            print(f"Inserted: {parsed[2]}")
-            print(f"Skipped or already stored: {parsed[1] - parsed[2]}")
+            found = result[0]
+            parsed = result[1]
+            inserted = result[2]
+            skipped = parsed - inserted
+
+            parsed_summary = f"""
+                Found:                {found}
+                Parsed:               {parsed}
+                Inserted:             {inserted}
+                Skipped / Stored:     {skipped}
+            """
+
+            console.print(
+                Panel(
+                    textwrap.dedent(parsed_summary).strip(),
+                    expand=False
+                ),
+                '\n'
+            )
 
             break
         else:
