@@ -22,17 +22,41 @@ class Database:
             with connection:
                 connection.execute(
                     """
-                    CREATE TABLE IF NOT EXISTS articles (
-                        id INTEGER PRIMARY KEY,
+                    CREATE TABLE IF NOT EXISTS articles 
+                    (
+                        id           INTEGER PRIMARY KEY,
                         
-                        title TEXT NOT NULL,
-                        url TEXT NOT NULL UNIQUE,
+                        title        TEXT NOT NULL,
+                        url          TEXT NOT NULL UNIQUE,
                         
                         content_hash TEXT,
                         
-                        pub_date TEXT,
+                        pub_date     TEXT,
                         scraped_date TEXT NOT NULL,
-                        source TEXT NOT NULL
+                        source       TEXT NOT NULL
+                    )
+                    """
+                )
+
+    def _create_summary_table(self) -> None:
+        with closing(self._get_connection()) as connection:
+            with connection:
+                connection.execute(
+                    """
+                    CREATE TABLE IF NOT EXISTS summary
+                    (
+                        id           INTEGER PRIMARY KEY,
+                        cluster_id   INTEGER NOT NULL,
+                        pair_id      INTEGER NOT NULL,
+
+                        title        TEXT NOT NULL,
+                        url          TEXT NOT NULL UNIQUE,
+
+                        content_hash TEXT,
+
+                        pub_date     TEXT,
+                        scraped_date TEXT NOT NULL,
+                        source       TEXT NOT NULL
                     )
                     """
                 )
