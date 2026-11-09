@@ -45,6 +45,6 @@ def parse(response: str):
         db_list.append(item)
 
     # Returns news that was written
-    inserted = db.write_to_db(db_list)
+    inserted = db.write_articles(db_list)
 
     return len(news_list), len(db_list), inserted

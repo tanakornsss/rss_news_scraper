@@ -13,10 +13,10 @@ article = {
 }
 
 # First save
-first = db.write_to_db([article])
+first = db.write_articles([article])
 
 # Second save
-second = db.write_to_db([article])
+second = db.write_articles([article])
 
 print("First insert:", first)
 print("Second insert:", second)

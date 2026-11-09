@@ -61,7 +61,7 @@ class Database:
                     """
                 )
 
-    def write_to_db(self, news: list[dict]) -> int:
+    def write_articles(self, news: list[dict]) -> int:
         # Will return 0 news if data sent was not type of news
         if not news:
             return 0
