@@ -11,6 +11,7 @@ class Database:
 
         self.db_name = str(BASE_DIR/name)
         self._create_article_table()
+        self._create_summary_table()
 
     def _get_connection(self) -> sqlite3.Connection:
         connection = sqlite3.connect(self.db_name)
@@ -90,6 +91,9 @@ class Database:
                     rows
                 )
             return cursor.rowcount
+
+    # def write_summary(self, articles: list[dict]) -> int:
+    #     print("Summary")
 
     def get_articles(self, limit: int = 20) -> list[dict]:
         with closing(self._get_connection()) as connection:

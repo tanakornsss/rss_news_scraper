@@ -14,39 +14,30 @@ def analyze():
         return
 
     lang = CONFIG.get("REGION", "hl")
-    if lang == "en-US":
-        pairs = find_similar_articles(
-            articles=articles,
-            threshold=CONFIG.getfloat("SIMILARITY", "threshold"),
-            top_k=CONFIG.getint("SIMILARITY", "top_k")
-        )
 
-        clusterings = clustering(
-            articles=articles,
-            n_clusters=CONFIG.getint("CLUSTERINGS", "n_clusters"),
-            random_state=CONFIG.getint("CLUSTERINGS", "random_state"),
-            n_init=CONFIG.getint("CLUSTERINGS", "n_init")
-        )
+    supported_lang = ["en-US", "th-TH"]
 
-        print_summary(pairs, clusterings)
-    elif lang == "th-TH":
-        pairs = find_similar_articles(
-            articles=articles,
-            is_thai=True,
-            threshold=CONFIG.getfloat("SIMILARITY", "threshold"),
-            top_k=CONFIG.getint("SIMILARITY", "top_k")
-        )
-
-        clusterings = clustering(
-            articles=articles,
-            n_clusters=CONFIG.getint("CLUSTERINGS", "n_clusters"),
-            random_state=CONFIG.getint("CLUSTERINGS", "random_state"),
-            n_init=CONFIG.getint("CLUSTERINGS", "n_init")
-        )
-
-        print_summary(pairs, clusterings)
-    else:
+    if lang not in supported_lang:
         print("Unsupported language")
+        return
+
+    is_thai = lang is supported_lang[1]
+
+    pairs = find_similar_articles(
+        articles=articles,
+        threshold=CONFIG.getfloat("SIMILARITY", "threshold"),
+        top_k=CONFIG.getint("SIMILARITY", "top_k"),
+        is_thai=is_thai
+    )
+
+    clusterings = clustering(
+        articles=articles,
+        n_clusters=CONFIG.getint("CLUSTERINGS", "n_clusters"),
+        random_state=CONFIG.getint("CLUSTERINGS", "random_state"),
+        n_init=CONFIG.getint("CLUSTERINGS", "n_init")
+    )
+
+    print_summary(pairs, clusterings)
 
 def print_summary(pairs: list[dict], clusterings: list[tuple]):
     print(("=" * 40) + " SIMILARITY " + ("=" * 40))
