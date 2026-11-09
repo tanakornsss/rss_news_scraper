@@ -1,7 +1,7 @@
-﻿from analysis.clustering import clustering
-from analysis.tfidf import find_similar_articles
-from collector.database import Database
-from config.setting import CONFIG
+﻿from src.analysis.clustering import clustering
+from src.analysis.tfidf import find_similar_articles
+from src.collector.database import Database
+from src.config.setting import CONFIG
 
 
 def analyze():

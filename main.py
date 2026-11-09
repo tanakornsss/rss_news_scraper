@@ -1,8 +1,8 @@
 ﻿import textwrap
 import questionary
 
-from mode.analyze import analyze
-from mode.collect import collect
+from src.mode.analyze import analyze
+from src.mode.collect import collect
 from rich import print
 from typer import Typer
 from questionary import Choice

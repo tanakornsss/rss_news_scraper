@@ -1,5 +1,5 @@
-﻿from analysis.text_cleaning import sanitize_text
-from collector.database import Database
+﻿from src.analysis.text_cleaning import sanitize_text
+from src.collector.database import Database
 
 db = Database()
 

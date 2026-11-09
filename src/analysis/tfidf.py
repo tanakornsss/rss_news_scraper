@@ -2,7 +2,7 @@
 from pythainlp import word_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from analysis.text_cleaning import sanitize_text
+from src.analysis.text_cleaning import sanitize_text
 
 def find_similar_articles(
     articles: list[dict],

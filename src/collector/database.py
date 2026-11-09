@@ -1,6 +1,6 @@
 ﻿import sqlite3
 from contextlib import closing
-from config.setting import CONFIG
+from src.config.setting import CONFIG
 from root_dir import BASE_DIR
 
 class Database:

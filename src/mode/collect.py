@@ -2,7 +2,7 @@
 
 import questionary
 
-from collector.source import find_from_keyword
+from src.collector.source import find_from_keyword
 from rich import print
 from rich.console import Console
 from rich.panel import Panel

@@ -1,4 +1,4 @@
-﻿from collector.database import Database
+﻿from src.collector.database import Database
 
 db = Database()
 

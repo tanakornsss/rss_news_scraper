@@ -1,7 +1,7 @@
 ﻿from collections import defaultdict
 from sklearn.cluster import KMeans
-from analysis import tfidf
-from analysis.text_cleaning import sanitize_text
+from src.analysis import tfidf
+from src.analysis.text_cleaning import sanitize_text
 
 def clustering(
     articles: list[dict],

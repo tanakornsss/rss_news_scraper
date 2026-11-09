@@ -1,8 +1,8 @@
 ﻿from datetime import datetime, timezone
 from bs4 import BeautifulSoup
-from collector.database import Database
-from collector.hash import generate_hash
-from analysis.text_cleaning import sanitize_text
+from src.collector.database import Database
+from src.collector.hash import generate_hash
+from src.analysis.text_cleaning import sanitize_text
 
 
 def parse(response: str):

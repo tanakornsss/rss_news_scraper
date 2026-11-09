@@ -1,6 +1,6 @@
 import requests
-from collector.parser import parse
-from config.setting import CONFIG
+from src.collector.parser import parse
+from src.config.setting import CONFIG
 
 def find_from_keyword(keyword: str):
     url = "https://news.google.com/rss"
