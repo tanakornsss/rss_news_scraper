@@ -47,8 +47,10 @@ class Database:
                     CREATE TABLE IF NOT EXISTS summary
                     (
                         id           INTEGER PRIMARY KEY,
-                        cluster_id   INTEGER NOT NULL,
+                        
                         pair_id      INTEGER NOT NULL,
+                        similarity   FLOAT NOT NULL,
+                        cluster_id   INTEGER NOT NULL,
 
                         title        TEXT NOT NULL,
                         url          TEXT NOT NULL UNIQUE,
