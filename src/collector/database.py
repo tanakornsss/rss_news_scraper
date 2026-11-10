@@ -25,7 +25,7 @@ class Database:
                     """
                     CREATE TABLE IF NOT EXISTS articles 
                     (
-                        id           INTEGER PRIMARY KEY,
+                        article_id   INTEGER PRIMARY KEY,
                         
                         title        TEXT NOT NULL,
                         url          TEXT NOT NULL UNIQUE,
@@ -46,10 +46,11 @@ class Database:
                     """
                     CREATE TABLE IF NOT EXISTS summary
                     (
-                        id           INTEGER PRIMARY KEY,
+                        summary_id   INTEGER PRIMARY KEY,
+                        article_id   INTEGER,
                         
-                        pair_id      INTEGER,
-                        similarity   FLOAT,
+                        pair_id      INTEGER[],
+                        similarity   FLOAT[],
                         cluster_id   INTEGER,
 
                         title        TEXT NOT NULL,
@@ -94,9 +95,6 @@ class Database:
                 )
             return cursor.rowcount
 
-    # def write_summary(self, articles: list[dict]) -> int:
-    #     print("Summary")
-
     def get_articles(self, limit: int = 20) -> list[dict]:
         with closing(self._get_connection()) as connection:
             rows = connection.execute(
@@ -129,3 +127,39 @@ class Database:
             ).fetchall()
 
             return [dict(row) for row in rows]
+
+    def write_summary(self, summary: list[dict]) -> int:
+
+        if not summary:
+            return 0
+
+        rows = [
+            (
+                item["pair_id"],
+                item["similarity"],
+                item["cluster_id"],
+
+                item["title"],
+                item["url"],
+
+                item["content_hash"],
+
+                item.get("pub_date"),  # Null handling
+                item["scraped_date"],
+                item["source"]
+            )
+            for item in summary
+        ]
+
+        with closing(self._get_connection()) as connection:
+            with connection:
+                cursor = connection.executemany(
+                    """
+                    INSERT INTO summary
+                        (pair_id, similarity, cluster_id, title, url, content_hash, pub_date, scraped_date, source)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    ON CONFLICT(url) DO NOTHING
+                    """,
+                    rows
+                )
+            return cursor.rowcount
