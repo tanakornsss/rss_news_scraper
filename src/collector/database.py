@@ -60,7 +60,9 @@ class Database:
 
                         pub_date     TEXT,
                         scraped_date TEXT NOT NULL,
-                        source       TEXT NOT NULL
+                        source       TEXT NOT NULL,
+                        
+                        FOREIGN KEY (article_id) REFERENCES articles(article_id)
                     )
                     """
                 )
