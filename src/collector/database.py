@@ -48,9 +48,9 @@ class Database:
                     (
                         id           INTEGER PRIMARY KEY,
                         
-                        pair_id      INTEGER NOT NULL,
-                        similarity   FLOAT NOT NULL,
-                        cluster_id   INTEGER NOT NULL,
+                        pair_id      INTEGER,
+                        similarity   FLOAT,
+                        cluster_id   INTEGER,
 
                         title        TEXT NOT NULL,
                         url          TEXT NOT NULL UNIQUE,
