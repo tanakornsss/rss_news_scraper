@@ -44,25 +44,26 @@ class Database:
             with connection:
                 connection.execute(
                     """
-                    CREATE TABLE IF NOT EXISTS summary
+                    CREATE TABLE IF NOT EXISTS article_pairs
                     (
-                        summary_id   INTEGER PRIMARY KEY,
-                        article_id   INTEGER,
+                        pair_id      INTEGER PRIMARY KEY AUTOINCREMENT,
                         
-                        pair_id      INTEGER[],
-                        similarity   FLOAT[],
-                        cluster_id   INTEGER,
-
-                        title        TEXT NOT NULL,
-                        url          TEXT NOT NULL UNIQUE,
-
-                        content_hash TEXT,
-
-                        pub_date     TEXT,
-                        scraped_date TEXT NOT NULL,
-                        source       TEXT NOT NULL,
+                        run_id       INTEGER NOT NULL,
                         
-                        FOREIGN KEY (article_id) REFERENCES articles(article_id)
+                        article_a_id INTEGER NOT NULL,
+                        article_b_id INTEGER NOT NULL,
+                        
+                        similarity   REAL NOT NULL,
+                        
+                        UNIQUE(run_id, article_a_id, article_b_id),
+                        
+                        FOREIGN KEY (article_a_id)
+                            REFERENCES articles(article_id),
+                        
+                        FOREIGN KEY (article_b_id)
+                            REFERENCES articles(article_id),
+                        
+                        CHECK ( article_a_id < article_b_id )
                     )
                     """
                 )
@@ -137,18 +138,10 @@ class Database:
 
         rows = [
             (
-                item["pair_id"],
-                item["similarity"],
-                item["cluster_id"],
-
-                item["title"],
-                item["url"],
-
-                item["content_hash"],
-
-                item.get("pub_date"),  # Null handling
-                item["scraped_date"],
-                item["source"]
+                item["run_id"],
+                min(item["article_a_id"], item["article_b_id"]),
+                max(item["article_a_id"], item["article_b_id"]),
+                item["similarity"]
             )
             for item in summary
         ]
@@ -157,11 +150,11 @@ class Database:
             with connection:
                 cursor = connection.executemany(
                     """
-                    INSERT INTO summary
-                        (pair_id, similarity, cluster_id, title, url, content_hash, pub_date, scraped_date, source)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-                    ON CONFLICT(url) DO NOTHING
+                    INSERT INTO article_pairs
+                        (run_id, article_a_id, article_b_id, similarity)
+                    VALUES (?, ?, ?, ?)
                     """,
                     rows
                 )
-            return cursor.rowcount
+
+        return cursor.rowcount

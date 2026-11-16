@@ -30,6 +30,12 @@ def analyze():
         is_thai=is_thai
     )
 
+    summary = [
+        
+    ]
+
+    db.write_summary(summary)
+
     clusterings = clustering(
         articles=articles,
         n_clusters=CONFIG.getint("CLUSTERINGS", "n_clusters"),
