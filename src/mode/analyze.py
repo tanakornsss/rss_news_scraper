@@ -7,7 +7,7 @@ from src.config.setting import CONFIG
 def analyze():
     db = Database()
 
-    articles = db.get_articles()
+    articles = db.get_articles(limit=1000)
 
     if len(articles) < 1:
         print("No data found")
@@ -30,32 +30,29 @@ def analyze():
         is_thai=is_thai
     )
 
-    summary = [
-        
-    ]
+    db.write_pairs(pairs)
+    print("Data written to db!")
 
-    db.write_summary(summary)
-
-    clusterings = clustering(
-        articles=articles,
-        n_clusters=CONFIG.getint("CLUSTERINGS", "n_clusters"),
-        random_state=CONFIG.getint("CLUSTERINGS", "random_state"),
-        n_init=CONFIG.getint("CLUSTERINGS", "n_init")
-    )
-
-    print_summary(pairs, clusterings)
-
-def print_summary(pairs: list[dict], clusterings: list[tuple]):
-    print(("=" * 40) + " SIMILARITY " + ("=" * 40))
-    for score, article_a, article_b in pairs:
-        print(f"Article A: {article_a["title"]}")
-        print(f"Article B: {article_b["title"]}")
-        print(f"Similarity: {score: .3f}")
-        print("-" * 40)
-
-    print(("=" * 40) + " CLUSTERING " + ("=" * 40))
-    for label, titles in clusterings:
-        print(f"Cluster {label}")
-
-        for title in titles:
-            print(f"Title: {title}")
+#     clusterings = clustering(
+#         articles=articles,
+#         n_clusters=CONFIG.getint("CLUSTERINGS", "n_clusters"),
+#         random_state=CONFIG.getint("CLUSTERINGS", "random_state"),
+#         n_init=CONFIG.getint("CLUSTERINGS", "n_init")
+#     )
+#
+#     print_summary(pairs, clusterings)
+#
+# def print_summary(pairs: list[dict], clusterings: list[tuple]):
+#     print(("=" * 40) + " SIMILARITY " + ("=" * 40))
+#     for score, article_a, article_b in pairs:
+#         print(f"Article A: {article_a["title"]}")
+#         print(f"Article B: {article_b["title"]}")
+#         print(f"Similarity: {score: .3f}")
+#         print("-" * 40)
+#
+#     print(("=" * 40) + " CLUSTERING " + ("=" * 40))
+#     for label, titles in clusterings:
+#         print(f"Cluster {label}")
+#
+#         for title in titles:
+#             print(f"Title: {title}")

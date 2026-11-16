@@ -41,13 +41,15 @@ def find_similar_articles(
         score = similarity_matrix[i, j]
 
         if score > threshold:
-            pairs.append((
-                score,
-                articles[i],
-                articles[j]
-            ))
+            pairs.append({
+                # run_id is a placeholder as of now
+                "run_id": 1,
+                "article_a_id": articles[i]["article_id"],
+                "article_b_id": articles[j]["article_id"],
+                "similarity": float(score)
+            })
 
-    pairs.sort(key=lambda item: item[0], reverse=True)
+    # pairs.sort(key=lambda item: item[0], reverse=True)
 
     # Tail splice
     return pairs[:top_k]

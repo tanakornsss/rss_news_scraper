@@ -102,7 +102,7 @@ class Database:
         with closing(self._get_connection()) as connection:
             rows = connection.execute(
                 """
-                SELECT title, url, content_hash, pub_date, scraped_date, source
+                SELECT article_id, title, url, content_hash, pub_date, scraped_date, source
                 FROM articles
                 ORDER BY scraped_date DESC
                 LIMIT ?
@@ -121,7 +121,7 @@ class Database:
         with closing(self._get_connection()) as connection:
             rows = connection.execute(
                 """
-                SELECT title, url, content_hash, pub_date, scraped_date, source 
+                SELECT article_id, title, url, content_hash, pub_date, scraped_date, source
                 FROM articles
                 WHERE title LIKE ?
                 ORDER BY scraped_date DESC
@@ -131,7 +131,7 @@ class Database:
 
             return [dict(row) for row in rows]
 
-    def write_summary(self, summary: list[dict]) -> int:
+    def write_pairs(self, summary: list[dict]) -> int:
 
         if not summary:
             return 0
