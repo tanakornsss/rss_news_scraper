@@ -24,7 +24,9 @@ def output_result_csv(result: list[dict]):
         "source"
     ]
 
+    sorted_data = sorted(result, key=lambda row: row["article_id"])
+
     with open("results.csv", "w", newline="", encoding="utf-8") as file:
         writer = csv.DictWriter(file, fieldnames)
         writer.writeheader()
-        writer.writerows(result)
+        writer.writerows(sorted_data)
