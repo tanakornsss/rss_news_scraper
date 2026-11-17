@@ -98,7 +98,7 @@ class Database:
                 )
             return cursor.rowcount
 
-    def get_articles(self, limit: int = 20) -> list[dict]:
+    def get_articles(self, limit: int = 100) -> list[dict]:
         with closing(self._get_connection()) as connection:
             rows = connection.execute(
                 """

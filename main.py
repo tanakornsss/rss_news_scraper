@@ -3,6 +3,7 @@ import questionary
 
 from src.mode.analyze import analyze
 from src.mode.collect import collect
+from src.mode.export import export_result
 from rich import print
 from typer import Typer
 from questionary import Choice
@@ -28,6 +29,7 @@ def main():
             choices=[
                 Choice("[1]: Collect news from RSS", value=1),
                 Choice("[2]: Analyze existing news", value=2),
+                Choice("[3]: Export results", value=3),
                 Choice("[0]: Exit", value=0),
             ]
         ).ask()
@@ -37,6 +39,8 @@ def main():
                 collect()
             case 2:
                 analyze()
+            case 3:
+                export_result()
             case 0:
                 exit()
 
