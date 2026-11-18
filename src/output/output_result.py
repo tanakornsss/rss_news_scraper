@@ -13,7 +13,7 @@ def output_result_xlsx():
 
     wb.save(f"{BASE_DIR}/report.xlsx")
 
-def output_result_csv(result: list[dict]):
+def output_result_csv(result: list[dict]) -> bool:
     fieldnames = [
         "article_id",
         "title",
@@ -26,7 +26,16 @@ def output_result_csv(result: list[dict]):
 
     sorted_data = sorted(result, key=lambda row: row["article_id"])
 
-    with open("results.csv", "w", newline="", encoding="utf-8") as file:
-        writer = csv.DictWriter(file, fieldnames)
-        writer.writeheader()
-        writer.writerows(sorted_data)
+    try:
+        with open("results.csv", "w", newline="", encoding="utf-8") as file:
+            writer = csv.DictWriter(file, fieldnames)
+            writer.writeheader()
+            writer.writerows(sorted_data)
+
+        return True
+    except PermissionError:
+        print("Permission denied")
+        return False
+    except OSError as e:
+        print(f"OS Exception {e}")
+        return False

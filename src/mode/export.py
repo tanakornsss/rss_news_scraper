@@ -6,6 +6,9 @@ def export_result():
     db = Database()
 
     result = db.get_articles()
-    output_result_csv(result)
 
-    print("Output csv generated")
+    if output_result_csv(result):
+        print("Output csv generated")
+    else:
+        print("Error generating csv")
+
